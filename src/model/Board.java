@@ -20,24 +20,6 @@ public class Board {
     }
 
     /**
-     * Initialise the board with a given board state.
-     *
-     * @param board The given board state.
-     */
-    public Board(Mark[][] board) {
-        this.board = board;
-        int ans = 0;
-        for (int i = 0; i < 3; i++)
-            for (int j = 0; j < 3; j++)
-                if (board[i][j] != Mark.EMPTY)
-                    ans++;
-        if (ans % 2 == 0)
-            turn = State.CROSS;
-        else
-            turn = State.NOUGHT;
-    }
-
-    /**
      * Clear the board.
      */
     private void clearBoard() {
@@ -184,15 +166,6 @@ public class Board {
      */
     public State getTurn() {
         return turn;
-    }
-
-    /**
-     * Get the internal board.
-     *
-     * @return The internal board.
-     */
-    public Mark[][] getBoard() {
-        return board;
     }
 
     /**

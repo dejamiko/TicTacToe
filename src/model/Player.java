@@ -7,71 +7,69 @@ package model;
  * @version 2021.04.27
  */
 public class Player {
-    private Mark[][] board;
-    private Board b;
-
-    public Player(Board board) {
-        this.b = board;
-    }
+    private final Board board;
 
     /**
-     * Set the current board state.
-     * @param board
+     * Constructor for the player with a given board.
+     *
+     * @param board The board the player is playing on.
      */
-    public void setBoard(Mark[][] board) {
+    public Player(Board board) {
         this.board = board;
     }
 
-    // Cross is minimiser, nought maximiser
-    public int minimax(Mark[][] position, int depth) {
-        Board pos = new Board(position);
-        if (pos.getState() == State.CROSS)
+    /**
+     * The minimax algorithm for evaluating positions, using
+     * alpha-beta pruning.
+     * CROSS is minimiser, NOUGHT maximiser
+     *
+     * @return The evaluation of the position.
+     */
+    public int minimax(int alpha, int beta) {
+        if (board.getState() == State.CROSS)
             return -100;
-        if (pos.getState() == State.NOUGHT)
+        if (board.getState() == State.NOUGHT)
             return 100;
-        if (pos.getState() == State.DRAW)
+        if (board.getState() == State.DRAW)
             return 0;
-        int best;
-        if (pos.getTurn() == State.NOUGHT) {
-            best = -1000;
-            for (int i = 0; i < 3; i++) {
-                for (int j = 0; j < 3; j++) {
-                    if (position[i][j] == Mark.EMPTY) {
-                        // make move
-                        pos.makeMove(i, j);
-                        best = Math.max(best, minimax(pos.getBoard(), depth + 1));
-                        // undo move
-                        pos.undoMove(i, j);
+
+        int best = board.getTurn() == State.NOUGHT ? -1000 : 1000;
+
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (board.getMark(i, j) == Mark.EMPTY) {
+                    board.makeMove(i, j);
+                    if (board.getTurn() != State.NOUGHT) {
+                        best = Math.max(best, minimax(alpha, beta));
+                        alpha = Math.max(alpha, best);
+                    } else {
+                        best = Math.min(best, minimax(alpha, beta));
+                        beta = Math.min(best, beta);
                     }
-                }
-            }
-        } else {
-            best = 1000;
-            for (int i = 0; i < 3; i++) {
-                for (int j = 0; j < 3; j++) {
-                    if (position[i][j] == Mark.EMPTY) {
-                        // make move
-                        pos.makeMove(i, j);
-                        best = Math.min(best, minimax(pos.getBoard(), depth + 1));
-                        // undo move
-                        pos.undoMove(i, j);
-                    }
+                    board.undoMove(i, j);
+                    if (alpha > beta)
+                        return best;
                 }
             }
         }
         return best;
     }
 
-
+    /**
+     * Find the best move in a given position.
+     *
+     * @return The best move in a given position.
+     */
     public int[] findMove() {
         int max = -1000;
         int[] ans = new int[]{0, 0};
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                if (board[i][j] == Mark.EMPTY) {
-                    board[i][j] = Mark.NOUGHT;
-                    int moveVal = minimax(board, 0);
-                    board[i][j] = Mark.EMPTY;
+
+        for (int i = 0; i < 3; i++)
+            for (int j = 0; j < 3; j++)
+                if (board.getMark(i, j) == Mark.EMPTY) {
+                    board.makeMove(i, j);
+                    int moveVal = minimax(-1000, 1000);
+                    board.undoMove(i, j);
 
                     if (moveVal > max) {
                         ans[0] = i;
@@ -79,8 +77,7 @@ public class Player {
                         max = moveVal;
                     }
                 }
-            }
-        }
+
         return ans;
     }
 }

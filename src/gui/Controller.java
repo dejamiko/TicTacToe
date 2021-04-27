@@ -86,29 +86,26 @@ public class Controller {
     private void mouseClicked(MouseEvent mouseEvent) {
         ImageView imageView = (ImageView) mouseEvent.getSource();
         int row = -1, col = -1;
-        for (int i = 0; i < images.length && row < 0; i++) {
-            for (int j = 0; j < images[i].length; j++) {
+        for (int i = 0; i < images.length && row < 0; i++)
+            for (int j = 0; j < images[i].length; j++)
                 if (images[i][j].equals(imageView)) {
                     row = i;
                     col = j;
                     break;
                 }
-            }
-        }
+
         board.makeMove(row, col);
-        drawBoard();
-        updateState();
-        if (board.getState() == State.UNFINISHED) {
-            try {
-                Thread.sleep(200);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            player.setBoard(board.getBoard());
-            int[] move = player.findMove();
-            board.makeMove(move[0], move[1]);
+        // Make sure the move was played
+        if (board.getTurn() == State.NOUGHT) {
             drawBoard();
             updateState();
+            // Only make a move if the game hasn't finished yet
+            if (board.getState() == State.UNFINISHED) {
+                int[] move = player.findMove();
+                board.makeMove(move[0], move[1]);
+                drawBoard();
+                updateState();
+            }
         }
     }
 
