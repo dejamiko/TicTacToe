@@ -20,6 +20,17 @@ public class Board {
     }
 
     /**
+     * Initialise the board with a given starting side.
+     *
+     * @param starting The side that starts the game.
+     */
+    public Board(State starting) {
+        board = new Mark[3][3];
+        clearBoard();
+        turn = starting;
+    }
+
+    /**
      * Clear the board.
      */
     private void clearBoard() {

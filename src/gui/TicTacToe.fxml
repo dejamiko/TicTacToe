@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.ImageView?>
@@ -39,9 +40,19 @@
       <Label fx:id="stateLabel" text="State" BorderPane.alignment="CENTER" />
    </bottom>
    <right>
-      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+      <VBox alignment="CENTER" BorderPane.alignment="CENTER">
          <children>
             <Button fx:id="restartButton" mnemonicParsing="false" onAction="#restartGame" text="Restart" />
+            <Button mnemonicParsing="false" onAction="#switchSides" text="Switch sides">
+               <VBox.margin>
+                  <Insets top="15.0" />
+               </VBox.margin>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#switchStarting" text="Switch starting">
+               <VBox.margin>
+                  <Insets left="10.0" right="10.0" top="15.0" />
+               </VBox.margin>
+            </Button>
          </children>
       </VBox>
    </right>

@@ -4,7 +4,6 @@ import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -23,8 +22,6 @@ import model.State;
 public class Controller {
     @FXML
     private Label stateLabel;
-    @FXML
-    private Button restartButton;
     @FXML
     private ImageView image00;
     @FXML
@@ -49,14 +46,24 @@ public class Controller {
     private ImageView[][] images;
     private Board board;
     private Player player;
+    private State starting;
+    private boolean computerBeginning;
+
+    /**
+     * The constructor for the controller.
+     */
+    public Controller() {
+        board = new Board();
+        starting = board.getTurn();
+        player = new Player(board);
+        computerBeginning = false;
+    }
 
     /**
      * Initialise the elements of the GUI.
      */
     @FXML
     private void initialize() {
-        board = new Board();
-        player = new Player(board);
         images = new ImageView[][]{
                 {image00, image01, image02},
                 {image10, image11, image12},
@@ -67,13 +74,14 @@ public class Controller {
             for (ImageView imageView : image) imageView.setOnMouseClicked(this::mouseClicked);
 
         Platform.runLater(() -> {
-            Stage stage = ((Stage) restartButton.getScene().getWindow());
+            Stage stage = ((Stage) image00.getScene().getWindow());
             ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) -> {
                 drawBoard();
             };
             stage.widthProperty().addListener(stageSizeListener);
             stage.heightProperty().addListener(stageSizeListener);
         });
+
         drawBoard();
         updateState();
     }
@@ -157,6 +165,37 @@ public class Controller {
      */
     @FXML
     private void restartGame() {
+        board = new Board(starting);
+        player = new Player(board);
         initialize();
+        if (computerBeginning) {
+            int[] move = player.findMove();
+            board.makeMove(move[0], move[1]);
+            drawBoard();
+            updateState();
+        }
+    }
+
+    /**
+     * Switch the sides (cross and nought).
+     */
+    @FXML
+    private void switchSides() {
+        if (starting == State.CROSS) {
+            starting = State.NOUGHT;
+        }
+        else {
+            starting = State.CROSS;
+        }
+        restartGame();
+    }
+
+    /**
+     * Switch who's starting the game.
+     */
+    @FXML
+    private void switchStarting() {
+        computerBeginning = !computerBeginning;
+        restartGame();
     }
 }
