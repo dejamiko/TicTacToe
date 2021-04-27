@@ -94,9 +94,7 @@ public class Controller {
                     break;
                 }
 
-        board.makeMove(row, col);
-        // Make sure the move was played
-        if (board.getTurn() == State.NOUGHT) {
+        if (board.makeMove(row, col)) {
             drawBoard();
             updateState();
             // Only make a move if the game hasn't finished yet

@@ -8,6 +8,7 @@ package model;
  */
 public class Player {
     private final Board board;
+    private State side;
 
     /**
      * Constructor for the player with a given board.
@@ -26,20 +27,20 @@ public class Player {
      * @return The evaluation of the position.
      */
     public int minimax(int alpha, int beta) {
-        if (board.getState() == State.CROSS)
-            return -100;
-        if (board.getState() == State.NOUGHT)
+        if (board.getState() == side)
             return 100;
         if (board.getState() == State.DRAW)
             return 0;
+        if (board.getState() != State.UNFINISHED)
+            return -100;
 
-        int best = board.getTurn() == State.NOUGHT ? -1000 : 1000;
+        int best = board.getTurn() == side ? -1000 : 1000;
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 if (board.getMark(i, j) == Mark.EMPTY) {
                     board.makeMove(i, j);
-                    if (board.getTurn() != State.NOUGHT) {
+                    if (board.getTurn() != side) {
                         best = Math.max(best, minimax(alpha, beta));
                         alpha = Math.max(alpha, best);
                     } else {
@@ -63,6 +64,7 @@ public class Player {
     public int[] findMove() {
         int max = -1000;
         int[] ans = new int[]{0, 0};
+        side = board.getTurn();
 
         for (int i = 0; i < 3; i++)
             for (int j = 0; j < 3; j++)

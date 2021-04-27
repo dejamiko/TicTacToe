@@ -16,7 +16,7 @@ public class Board {
     public Board() {
         board = new Mark[3][3];
         clearBoard();
-        turn = State.CROSS;
+        turn = State.NOUGHT;
     }
 
     /**
@@ -33,12 +33,15 @@ public class Board {
      *
      * @param row The row where the new mark is placed.
      * @param col The column where the new mark is placed.
+     * @return True if the move was made.
      */
-    public void makeMove(int row, int col) {
+    public boolean makeMove(int row, int col) {
         if (board[row][col] == Mark.EMPTY) {
             board[row][col] = turn.getMark();
             switchTurn();
+            return true;
         }
+        return false;
     }
 
     /**
