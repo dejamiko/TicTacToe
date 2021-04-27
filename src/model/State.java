@@ -7,28 +7,28 @@ package model;
  * @version 2021.04.26
  */
 public enum State {
-    CROSS(Mark.CROSS),
-    NOUGHT(Mark.NOUGHT),
-    DRAW(Mark.EMPTY),
-    UNFINISHED(Mark.EMPTY);
+    CROSS_WON(Turn.CROSS),
+    NOUGHT_WON(Turn.NOUGHT),
+    DRAW(Turn.NEITHER),
+    UNFINISHED(Turn.NEITHER);
 
-    private final Mark mark;
+    Turn turn;
 
     /**
-     * The constructor for the enum objects.
+     * A constructor for the state enum.
      *
-     * @param mark The mark associated with a given state.
+     * @param turn The turn associated with a given state.
      */
-    State(Mark mark) {
-        this.mark = mark;
+    State(Turn turn){
+        this.turn = turn;
     }
 
     /**
-     * Get the mark associated with a given state.
+     * Get the turn associated with a given state.
      *
-     * @return The mark associated with a given state.
+     * @return The turn associated with a given state.
      */
-    public Mark getMark() {
-        return mark;
+    public Turn getTurn() {
+        return turn;
     }
 }

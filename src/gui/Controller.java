@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 import model.Board;
 import model.Player;
 import model.State;
+import model.Turn;
 
 /**
  * A controller class for the tic-tac-toe gui.
@@ -46,7 +47,7 @@ public class Controller {
     private ImageView[][] images;
     private Board board;
     private Player player;
-    private State starting;
+    private Turn starting;
     private boolean computerBeginning;
 
     /**
@@ -181,12 +182,10 @@ public class Controller {
      */
     @FXML
     private void switchSides() {
-        if (starting == State.CROSS) {
-            starting = State.NOUGHT;
-        }
-        else {
-            starting = State.CROSS;
-        }
+        if (starting == Turn.CROSS)
+            starting = Turn.NOUGHT;
+        else
+            starting = Turn.CROSS;
         restartGame();
     }
 

@@ -8,7 +8,7 @@ package model;
  */
 public class Player {
     private final Board board;
-    private State side;
+    private Turn side;
 
     /**
      * Constructor for the player with a given board.
@@ -27,7 +27,7 @@ public class Player {
      * @return The evaluation of the position.
      */
     public int minimax(int alpha, int beta) {
-        if (board.getState() == side)
+        if (board.getState().getTurn() == side)
             return 100;
         if (board.getState() == State.DRAW)
             return 0;

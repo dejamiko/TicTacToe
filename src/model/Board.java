@@ -8,7 +8,7 @@ package model;
  */
 public class Board {
     private final Mark[][] board;
-    private State turn;
+    private Turn turn;
 
     /**
      * Initialise the board.
@@ -16,7 +16,7 @@ public class Board {
     public Board() {
         board = new Mark[3][3];
         clearBoard();
-        turn = State.NOUGHT;
+        turn = Turn.NOUGHT;
     }
 
     /**
@@ -24,7 +24,7 @@ public class Board {
      *
      * @param starting The side that starts the game.
      */
-    public Board(State starting) {
+    public Board(Turn starting) {
         board = new Mark[3][3];
         clearBoard();
         turn = starting;
@@ -59,10 +59,10 @@ public class Board {
      * Switch the turn.
      */
     private void switchTurn() {
-        if (turn == State.CROSS)
-            turn = State.NOUGHT;
+        if (turn == Turn.CROSS)
+            turn = Turn.NOUGHT;
         else
-            turn = State.CROSS;
+            turn = Turn.CROSS;
     }
 
     /**
@@ -72,9 +72,9 @@ public class Board {
      */
     public State getState() {
         if (won(Mark.CROSS))
-            return State.CROSS;
+            return State.CROSS_WON;
         if (won(Mark.NOUGHT))
-            return State.NOUGHT;
+            return State.NOUGHT_WON;
         if (isDraw())
             return State.DRAW;
         return State.UNFINISHED;
@@ -178,7 +178,7 @@ public class Board {
      *
      * @return The current player.
      */
-    public State getTurn() {
+    public Turn getTurn() {
         return turn;
     }
 
