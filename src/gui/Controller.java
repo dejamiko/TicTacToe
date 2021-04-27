@@ -77,9 +77,7 @@ public class Controller {
 
         Platform.runLater(() -> {
             Stage stage = ((Stage) image00.getScene().getWindow());
-            ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) -> {
-                drawBoard();
-            };
+            ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) -> drawBoard();
             stage.widthProperty().addListener(stageSizeListener);
             stage.heightProperty().addListener(stageSizeListener);
         });
