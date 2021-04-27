@@ -47,7 +47,7 @@ public class Player {
                         beta = Math.min(best, beta);
                     }
                     board.undoMove(i, j);
-                    if (alpha > beta)
+                    if (alpha >= beta)
                         return best;
                 }
             }
