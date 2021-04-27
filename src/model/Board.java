@@ -16,7 +16,7 @@ public class Board {
     public Board() {
         board = new Mark[3][3];
         clearBoard();
-        turn = Turn.NOUGHT;
+        turn = Turn.CROSS;
     }
 
     /**

@@ -5,6 +5,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -146,6 +147,7 @@ public class Controller {
                 images[i][j].setImage(board.getMark(i, j).getImage());
                 images[i][j].setFitHeight(gridPane.getHeight() / gridPane.getRowCount());
                 images[i][j].setFitWidth(gridPane.getWidth() / gridPane.getColumnCount());
+                images[i][j].setEffect(new ColorAdjust(0.3, 0.5, 0.5, 0.0));
             }
         }
     }
