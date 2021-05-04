@@ -42,7 +42,7 @@
    <right>
       <VBox alignment="CENTER" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="restartButton" mnemonicParsing="false" onAction="#restartGame" text="Restart" />
+            <Button mnemonicParsing="false" onAction="#restartGame" text="Restart" />
             <Button mnemonicParsing="false" onAction="#switchSides" text="Switch sides">
                <VBox.margin>
                   <Insets top="15.0" />
