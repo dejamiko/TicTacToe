@@ -79,7 +79,6 @@ public class Player {
                         max = moveVal;
                     }
                 }
-
         return ans;
     }
 }

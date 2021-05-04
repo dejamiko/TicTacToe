@@ -9,12 +9,14 @@ package model;
 public class Board {
     private final Mark[][] board;
     private Turn turn;
+    private int size;
 
     /**
      * Initialise the board.
      */
-    public Board() {
-        board = new Mark[3][3];
+    public Board(int size) {
+        this.size = size;
+        board = new Mark[size][size];
         clearBoard();
         turn = Turn.CROSS;
     }
@@ -25,7 +27,8 @@ public class Board {
      * @param starting The side that starts the game.
      */
     public Board(Turn starting) {
-        board = new Mark[3][3];
+        size = 3;
+        board = new Mark[size][size];
         clearBoard();
         turn = starting;
     }
@@ -34,8 +37,8 @@ public class Board {
      * Clear the board.
      */
     private void clearBoard() {
-        for (int i = 0; i < 3; i++)
-            for (int j = 0; j < 3; j++)
+        for (int i = 0; i < size; i++)
+            for (int j = 0; j < size; j++)
                 board[i][j] = Mark.EMPTY;
     }
 

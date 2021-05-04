@@ -15,6 +15,9 @@ import model.Player;
 import model.State;
 import model.Turn;
 
+import java.util.Random;
+
+
 /**
  * A controller class for the tic-tac-toe gui.
  *
@@ -55,7 +58,7 @@ public class Controller {
      * The constructor for the controller.
      */
     public Controller() {
-        board = new Board();
+        board = new Board(3);
         starting = board.getTurn();
         player = new Player(board);
         computerBeginning = false;
@@ -107,10 +110,20 @@ public class Controller {
             updateState();
             // Only make a move if the game hasn't finished yet
             if (board.getState() == State.UNFINISHED) {
-                int[] move = player.findMove();
-                board.makeMove(move[0], move[1]);
-                drawBoard();
-                updateState();
+                new Thread(() -> {
+                    Random random = new Random();
+                    int[] move = player.findMove();
+                    board.makeMove(move[0], move[1]);
+                    try {
+                        Thread.sleep(random.nextInt(150));
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                    }
+                    Platform.runLater(() -> {
+                        drawBoard();
+                        updateState();
+                    });
+                }).start();
             }
         }
     }
