@@ -76,7 +76,11 @@ public class Controller {
         };
 
         for (ImageView[] image : images)
-            for (ImageView imageView : image) imageView.setOnMouseClicked(this::mouseClicked);
+            for (ImageView imageView : image) {
+                imageView.setOnMouseClicked(this::mouseClicked);
+                imageView.setOnMouseEntered(this::mouseEntered);
+                imageView.setOnMouseExited(this::mouseExited);
+            }
 
         Platform.runLater(() -> {
             Stage stage = ((Stage) image00.getScene().getWindow());
@@ -95,17 +99,9 @@ public class Controller {
      * @param mouseEvent The mouse event that occurred.
      */
     private void mouseClicked(MouseEvent mouseEvent) {
-        ImageView imageView = (ImageView) mouseEvent.getSource();
-        int row = -1, col = -1;
-        for (int i = 0; i < images.length && row < 0; i++)
-            for (int j = 0; j < images[i].length; j++)
-                if (images[i][j].equals(imageView)) {
-                    row = i;
-                    col = j;
-                    break;
-                }
+        int[] moveSource = getSource(mouseEvent);
 
-        if (board.makeMove(row, col)) {
+        if (board.makeMove(moveSource[0], moveSource[1])) {
             drawBoard();
             updateState();
             // Only make a move if the game hasn't finished yet
@@ -126,6 +122,64 @@ public class Controller {
                 }).start();
             }
         }
+    }
+
+    /**
+     * Simulate the move when mouse hover over a square.
+     *
+     * @param mouseEvent The mouse event that occurred.
+     */
+    private void mouseEntered(MouseEvent mouseEvent) {
+        int[] moveSource = getSource(mouseEvent);
+
+        if (board.makeMove(moveSource[0], moveSource[1])) {
+            drawImage(moveSource[0], moveSource[1], 0.3);
+            board.undoMove(moveSource[0], moveSource[1]);
+        }
+    }
+
+    /**
+     * Draw the image in an appropriate place with appropriate brightness setting.
+     *
+     * @param row The given row.
+     * @param col The given column.
+     * @param brightness The given brightness setting.
+     */
+    private void drawImage(int row, int col, double brightness) {
+        images[row][col].setImage(board.getMark(row, col).getImage());
+        images[row][col].setFitHeight(gridPane.getHeight() / gridPane.getRowCount());
+        images[row][col].setFitWidth(gridPane.getWidth() / gridPane.getColumnCount());
+        images[row][col].setEffect(new ColorAdjust(0.3, 0.5, brightness, 0.0));
+    }
+
+    /**
+     * Get the coordinates of the source of the mouse event.
+     *
+     * @param mouseEvent The mouse event.
+     * @return The coordinates of the source.
+     */
+    private int[] getSource(MouseEvent mouseEvent) {
+        ImageView imageView = (ImageView) mouseEvent.getSource();
+        int row = -1, col = -1;
+        for (int i = 0; i < images.length && row < 0; i++)
+            for (int j = 0; j < images[i].length; j++)
+                if (images[i][j].equals(imageView)) {
+                    row = i;
+                    col = j;
+                    break;
+                }
+        return new int[]{row, col};
+    }
+
+    /**
+     * Undo the simulated move from the hover.
+     *
+     * @param mouseEvent The mouse event that occurred.
+     */
+    private void mouseExited(MouseEvent mouseEvent) {
+        int[] moveSource = getSource(mouseEvent);
+
+        drawImage(moveSource[0], moveSource[1], 0.5);
     }
 
     /**
@@ -155,10 +209,7 @@ public class Controller {
     private void drawBoard() {
         for (int i = 0; i < images.length; i++) {
             for (int j = 0; j < images[i].length; j++) {
-                images[i][j].setImage(board.getMark(i, j).getImage());
-                images[i][j].setFitHeight(gridPane.getHeight() / gridPane.getRowCount());
-                images[i][j].setFitWidth(gridPane.getWidth() / gridPane.getColumnCount());
-                images[i][j].setEffect(new ColorAdjust(0.3, 0.5, 0.5, 0.0));
+                drawImage(i, j, 0.5);
             }
         }
     }
